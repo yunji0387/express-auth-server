@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import Blacklist from "../models/Blacklist.js";
 
 /**
  * @route POST /auth/register
@@ -91,6 +92,39 @@ export async function Login(req, res) {
             data: [],
             message: "Internal Server Error",
             details: error.message,
+        });
+    }
+    res.end();
+}
+
+/**
+ * @route POST /auth/logout
+ * @desc Logout user
+ * @access Public
+ */
+export async function Logout(req, res) {
+    try {
+        const authHeader = req.headers["cookie"];
+        if(!authHeader) return res.sendStatus(204); // No content
+        const cookie = authHeader.split("=")[1];
+        const accessToken = await Blacklist.create({ token: cookie });
+        const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken.token });
+
+        if(checkIfBlacklisted) return res.status(204); // No content
+
+        //else blacklist the token
+        const newBlacklist = new Blacklist({ token: accessToken });
+        await newBlacklist.save();
+
+        //clear the cookie on the client side
+        res.setHeader('Clear-Site-Data', '"cookies"');
+        res.status(200).json({ message: "You are logged out!" });
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            code: 500,
+            data: [],
+            message: "Internal Server Error",
         });
     }
     res.end();
