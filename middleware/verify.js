@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Blacklist from "../models/Blacklist.js";
 import jwt from "jsonwebtoken";
 import { SECRET_ACCESS_TOKEN } from "../config/index.js";
 
@@ -6,10 +7,19 @@ export async function Verify(req, res, next) {
     try {
         const authHeader = req.headers["cookie"];
 
-        if(!authHeader) return res.sendStatus(401);
+        if (!authHeader) return res.sendStatus(401);
         const cookie = authHeader.split("=")[1];
+        const accessToken = cookie.split(";")[0];
 
-        jwt.verify(cookie, SECRET_ACCESS_TOKEN, async (err, decoded) => {
+        const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken });
+        if (checkIfBlacklisted) {
+            return res.status(401).json({
+                status: "failed",
+                message: "This session has expired. Please login to continue.",
+            });
+        };
+
+        jwt.verify(accessToken, SECRET_ACCESS_TOKEN, async (err, decoded) => {
             if (err) {
                 return res.status(401).json({
                     status: "failed",
