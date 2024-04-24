@@ -51,7 +51,7 @@ export async function Register(req, res) {
 export async function Login(req, res) {
     const { email } = req.body;
     try {
-        const user = await User.findOne({email}).select("+password");
+        const user = await User.findOne({ email }).select("+password");
         if (!user) {
             return res.status(401).json({
                 status: "failed",
@@ -67,11 +67,22 @@ export async function Login(req, res) {
                 message: "Invalid email or password. Please try again with the correct credentials.",
             });
         }
-        const { password, ...user_data } = user._doc;
 
+        let options = {
+            maxAge: 1000 * 60 * 60, // would expire after 15 minutes
+            httpOnly: true,
+            signed: true,
+            secure: true,
+            samSite: "None",
+        };
+
+        const token = user.generateAccessJWT();
+        res.cookie("SessionID", token, options);
+        // const { password, ...user_data } = user._doc;
         res.status(200).json({
             status: "success",
-            data: [user_data],
+            // data: [user_data],
+            data: [],
             message: "You have successfully logged in.",
         });
     } catch (error) {
