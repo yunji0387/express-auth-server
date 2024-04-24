@@ -3,7 +3,7 @@ import User from "../models/User.js";
 export async function Register(req, res) {
     const { first_name, last_name, email, password } = req.body;
     try {
-        const user = new User({
+        const newUser = new User({
             first_name,
             last_name,
             email,
