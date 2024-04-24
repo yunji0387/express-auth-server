@@ -56,7 +56,7 @@ export async function Login(req, res) {
             return res.status(401).json({
                 status: "failed",
                 data: [],
-                message: "Invalid email or password. Please try again with the correct credentials.",
+                message: "Account does not exist",
             });
         }
         const isPasswordVaild = await bcrypt.compare(String(req.body.password), user.password);
@@ -69,9 +69,8 @@ export async function Login(req, res) {
         }
 
         let options = {
-            maxAge: 1000 * 60 * 60, // would expire after 15 minutes
+            maxAge: 20 * 60 * 1000, // would expire after 15 minutes
             httpOnly: true,
-            signed: true,
             secure: true,
             samSite: "None",
         };
