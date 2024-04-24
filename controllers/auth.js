@@ -19,10 +19,13 @@ export async function Register(req, res) {
             });
         }
         const savedUser = await newUser.save();
-        const { role, ...user_data } = savedUser._doc;
+        // const userObject = savedUser.toObject();
+        // let { _id, __v, role, ...userWithoutSensitiveData } = userObject;
+        // console.log(userWithoutSensitiveData);
         res.status(200).json({
             status: "success",
-            data: [user_data],
+            // data: [userWithoutSensitiveData],
+            data: [],
             message: "Thank you for registering with us. Your account has been successfully created.",
         });
 
