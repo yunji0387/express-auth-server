@@ -1,6 +1,6 @@
 import express from "express";
 import Auth from "./auth.js";
-import Verify from "../middleware/verify.js";
+import { Verify, VerifyRole } from "../middleware/verify.js";
 
 const app = express();
 
@@ -27,6 +27,13 @@ app.get("/user", Verify, (req, res) => {
     res.status(200).json({
         status: "success",
         message: "Welcome to your Dashboard.",
+    });
+});
+
+app.get("/admin", Verify, VerifyRole, (req, res) => {
+    res.status(200).json({
+        status: "success",
+        message: "Welcome to the Admin portal!",
     });
 });
 
