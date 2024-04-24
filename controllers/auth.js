@@ -1,5 +1,11 @@
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
 
+/**
+ * @route POST /auth/register
+ * @desc Registers a user
+ * @access Public
+ */
 export async function Register(req, res) {
     const { first_name, last_name, email, password } = req.body;
     try {
@@ -19,16 +25,55 @@ export async function Register(req, res) {
             });
         }
         const savedUser = await newUser.save();
-        // const userObject = savedUser.toObject();
-        // let { _id, __v, role, ...userWithoutSensitiveData } = userObject;
-        // console.log(userWithoutSensitiveData);
         res.status(200).json({
             status: "success",
-            // data: [userWithoutSensitiveData],
-            data: [],
+            data: [{ first_name, last_name, email }],
             message: "Thank you for registering with us. Your account has been successfully created.",
         });
 
+    } catch (error) {
+        return res.status(500).json({
+            status: "error",
+            code: 500,
+            data: [],
+            message: "Internal Server Error",
+            details: error.message,
+        });
+    }
+    res.end();
+}
+
+/**
+ * @route POST /auth/login
+ * @desc Logs in a user
+ * @access Public
+ */
+export async function Login(req, res) {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({email}).select("+password");
+        if (!user) {
+            return res.status(401).json({
+                status: "failed",
+                data: [],
+                message: "Invalid email or password. Please try again with the correct credentials.",
+            });
+        }
+        const isPasswordVaild = await bcrypt.compare(String(req.body.password), user.password);
+        if (!isPasswordVaild) {
+            return res.status(401).json({
+                status: "failed",
+                data: [],
+                message: "Invalid email or password. Please try again with the correct credentials.",
+            });
+        }
+        const { password, ...user_data } = user._doc;
+
+        res.status(200).json({
+            status: "success",
+            data: [user_data],
+            message: "You have successfully logged in.",
+        });
     } catch (error) {
         return res.status(500).json({
             status: "error",
