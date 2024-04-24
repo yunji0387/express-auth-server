@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import { PORT, URI } from "./config/index.js";
-// import App from "./routes/index.js";
+import App from "./routes/index.js";
 
 const server = express();
 
