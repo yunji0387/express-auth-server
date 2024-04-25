@@ -70,10 +70,10 @@ export async function Login(req, res) {
         }
 
         let options = {
-            maxAge: 20 * 60 * 1000, // would expire after 15 minutes
+            maxAge: 20 * 60 * 1000, // would expire after 20 minutes
             httpOnly: true,
             secure: true,
-            samSite: "None",
+            sameSite: "None",
         };
 
         const token = user.generateAccessJWT();
@@ -107,7 +107,7 @@ export async function Logout(req, res) {
         const authHeader = req.headers["cookie"];
         if(!authHeader) return res.sendStatus(204); // No content
         const cookie = authHeader.split("=")[1];
-        const accessToken = await Blacklist.create({ token: cookie });
+        const accessToken = cookie.split(';')[0];
         const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken.token });
 
         if(checkIfBlacklisted) return res.status(204); // No content
