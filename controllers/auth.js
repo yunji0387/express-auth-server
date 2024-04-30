@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import Blacklist from "../models/Blacklist.js";
+import { VerifyToken } from "../middleware/verify.js";
 
 /**
  * @route POST /auth/register
@@ -129,3 +130,17 @@ export async function Logout(req, res) {
     }
     res.end();
 }
+
+/**
+ * @route GET /auth/verify
+ * @desc Verify user
+ * @access Public
+ */
+// export async function Verify(req, res) {
+//     Verify(req, res, () => {
+//         res.status(200).json({
+//             status: "success",
+//             message: "Verification successful!",
+//         });
+//     });
+// }

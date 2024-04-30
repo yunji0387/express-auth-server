@@ -44,4 +44,6 @@ router.post(
 
 router.get("/logout", Logout);
 
+// router.get("/verify", );
+
 export default router;

@@ -3,7 +3,7 @@ import Blacklist from "../models/Blacklist.js";
 import jwt from "jsonwebtoken";
 import { SECRET_ACCESS_TOKEN } from "../config/index.js";
 
-export async function Verify(req, res, next) {
+export async function VerifyToken(req, res, next) {
     try {
         const authHeader = req.headers["cookie"];
 
