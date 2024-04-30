@@ -106,12 +106,12 @@ export async function Login(req, res) {
 export async function Logout(req, res) {
     try {
         const authHeader = req.headers["cookie"];
-        if(!authHeader) return res.sendStatus(204); // No content
+        if (!authHeader) return res.sendStatus(204); // No content
         const cookie = authHeader.split("=")[1];
         const accessToken = cookie.split(';')[0];
         const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken.token });
 
-        if(checkIfBlacklisted) return res.status(204); // No content
+        if (checkIfBlacklisted) return res.status(204); // No content
 
         //else blacklist the token
         const newBlacklist = new Blacklist({ token: accessToken });
@@ -136,11 +136,9 @@ export async function Logout(req, res) {
  * @desc Verify user
  * @access Public
  */
-// export async function Verify(req, res) {
-//     Verify(req, res, () => {
-//         res.status(200).json({
-//             status: "success",
-//             message: "Verification successful!",
-//         });
-//     });
-// }
+export async function Verify(req, res) {
+    res.status(200).json({
+        status: "success",
+        message: "You are authenticated",
+    });
+}
