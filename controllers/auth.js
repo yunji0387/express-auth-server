@@ -82,8 +82,8 @@ export async function Login(req, res) {
         // const { password, ...user_data } = user._doc;
         res.status(200).json({
             status: "success",
-            // data: [user_data],
-            data: [],
+            data: [{ first_name: user.first_name, last_name: user.last_name, email: user.email }],
+            // data: [],
             message: "You have successfully logged in.",
         });
     } catch (error) {
