@@ -14,17 +14,21 @@ export async function VerifyToken(req, res, next) {
         const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken });
         if (checkIfBlacklisted) {
             return res.status(401).json({
-                status: "failed",
-                message: "This session has expired. Please login to continue.",
+                error: {
+                    status: "failed",
+                    message: "This session has expired. Please login to continue.",
+                }
             });
         };
 
         jwt.verify(accessToken, SECRET_ACCESS_TOKEN, async (err, decoded) => {
             if (err) {
                 return res.status(401).json({
-                    status: "failed",
-                    message: "This session has expired. Please login to continue.",
-                    details: err.message,
+                    error: {
+                        status: "failed",
+                        message: "This session has expired. Please login to continue.",
+                        details: err.message,
+                    }
                 });
             }
 
@@ -37,11 +41,13 @@ export async function VerifyToken(req, res, next) {
 
     } catch (err) {
         res.status(500).json({
-            status: "error",
-            message: "Internal Server Error",
-            code: 500,
-            data: [],
-            details: err.message,
+            error: {
+                status: "error",
+                message: "Internal Server Error",
+                code: 500,
+                data: [],
+                details: err.message,
+            }
         });
     }
 }
@@ -54,17 +60,21 @@ export function VerifyRole(req, res, next) {
         // return an unathorized response
         if (role !== "0x88") {
             return res.status(401).json({
-                status: "failed",
-                message: "You are not authorized to view this page.",
+                error: {
+                    status: "failed",
+                    message: "You are not authorized to view this page.",
+                }
             });
         }
         next(); // continue to the next middleware or function
     } catch (err) {
         res.status(500).json({
-            status: "error",
-            code: 500,
-            data: [],
-            message: "Internal Server Error",
+            error: {
+                status: "error",
+                code: 500,
+                data: [],
+                message: "Internal Server Error",
+            }
         });
     }
 }

@@ -21,9 +21,11 @@ export async function Register(req, res) {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({
-                status: "failed",
-                data: [],
-                message: "It seems you already have an account, please log in instead.",
+                error: {
+                    status: "failed",
+                    data: [],
+                    message: "It seems you already have an account, please log in instead.",
+                }
             });
         }
         const savedUser = await newUser.save();
@@ -35,11 +37,13 @@ export async function Register(req, res) {
 
     } catch (error) {
         return res.status(500).json({
-            status: "error",
-            code: 500,
-            data: [],
-            message: "Internal Server Error",
-            details: error.message,
+            error: {
+                status: "error",
+                code: 500,
+                data: [],
+                message: "Internal Server Error",
+                details: error.message,
+            }
         });
     }
     res.end();
@@ -56,17 +60,21 @@ export async function Login(req, res) {
         const user = await User.findOne({ email }).select("+password");
         if (!user) {
             return res.status(401).json({
-                status: "failed",
-                data: [],
-                message: "Account does not exist",
+                error: {
+                    status: "failed",
+                    data: [],
+                    message: "Invalid email or password. Please try again with the correct credentials.",
+                }
             });
         }
         const isPasswordVaild = await bcrypt.compare(String(req.body.password), user.password);
         if (!isPasswordVaild) {
             return res.status(401).json({
-                status: "failed",
-                data: [],
-                message: "Invalid email or password. Please try again with the correct credentials.",
+                error: {
+                    status: "failed",
+                    data: [],
+                    message: "Invalid email or password. Please try again with the correct credentials.",
+                }
             });
         }
 
@@ -79,20 +87,20 @@ export async function Login(req, res) {
 
         const token = user.generateAccessJWT();
         res.cookie("SessionID", token, options);
-        // const { password, ...user_data } = user._doc;
         res.status(200).json({
             status: "success",
             data: [{ first_name: user.first_name, last_name: user.last_name, email: user.email }],
-            // data: [],
             message: "You have successfully logged in.",
         });
     } catch (error) {
         return res.status(500).json({
-            status: "error",
-            code: 500,
-            data: [],
-            message: "Internal Server Error",
-            details: error.message,
+            error: {
+                status: "error",
+                code: 500,
+                data: [],
+                message: "Internal Server Error.",
+                details: error.message,
+            }
         });
     }
     res.end();
@@ -122,10 +130,12 @@ export async function Logout(req, res) {
         res.status(200).json({ message: "You are logged out!" });
     } catch (err) {
         res.status(500).json({
-            status: "error",
-            code: 500,
-            data: [],
-            message: "Internal Server Error",
+            error: {
+                status: "error",
+                code: 500,
+                data: [],
+                message: "Internal Server Error",
+            }
         });
     }
     res.end();
