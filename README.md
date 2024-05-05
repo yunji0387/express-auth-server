@@ -30,7 +30,7 @@ Create a .env file in the root directory and update it with your MongoDB URI and
   ```md
   PORT=5000
   URI=mongodb://localhost:27017/myauthdb
-  SECRET_KEY=your_secret_key
+  SECRET_ACCESS_TOKEN=your_secret_key
   ```
 
 ## Running the Server
