@@ -48,14 +48,34 @@ The server will start running on http://localhost:5000.
 - Body:
   ```json
   {
-  "first_name": "John",
-  "last_name": "Doe",
-  "email": "johndoe@example.com",
-  "password": "password123"
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "johndoe@example.com",
+    "password": "password123"
   }
   ```
-- Success Response: 200 OK + user data
-- Error Response: 400 Bad Request + error message
+- Success Response: `201 Created` +
+  ```json
+  {
+    "status": "success",
+    "data": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "johndoe@example.com"
+    },
+    "message": "Your account has been successfully created."
+  }
+  ```
+
+- Error Response: `400 Bad Request` +
+  ```json
+  {
+    "error": {
+      "status": "failed",
+      "message": "It seems you already have an account, please log in instead."
+    }
+  }
+  ```
 
 ### Login
 - URL: `/auth/login`
@@ -63,23 +83,69 @@ The server will start running on http://localhost:5000.
 - Body:
   ```json
   {
-  "email": "johndoe@example.com",
-  "password": "password123"
+    "email": "johndoe@example.com",
+    "password": "password123"
   }
   ```
-- Success Response: 200 OK + user data JWT token (set in HTTPOnly cookie)
-- Error Response: 401 Unauthorized + error message
+- Success Response: `200 OK` + user data JWT token (set in HTTPOnly cookie) +
+  ```json
+  {
+    "status": "success",
+    "data": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "johndoe@example.com"
+    },
+    "message": "You have successfully logged in."
+  }
+  ```
+
+- Error Response: `401 Unauthorized` +
+  ```json
+  {
+    "error": {
+      "status": "failed",
+      "message": "Invalid email or password. Please try again with the correct credentials."
+    }
+  }
+  ```
 
 ### Logout
 - URL: `/auth/logout`
 - Method: `GET`
-- Success Response: 200 OK
+- Success Response: `200 OK` +
+  ```json
+  {
+    "status": "success",
+    "data": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "johndoe@example.com"
+    },
+    "message": "You have successfully logged in."
+  }
+  ```
+- Error Response: `401 Unauthorized` (if token is invalid or expired) +
+  ```json
+  {
+    "error": {
+      "status": "failed",
+      "message": "Invalid email or password. Please try again with the correct credentials."
+    }
+  }
+  ```
 
 ### Verify Session
 - URL: `/auth/verify`
 - Method: `GET`
-- Success Response: 200 OK + user data
-- Error Response: 401 Unauthorized
+- Success Response: `200 OK` +
+  ```json
+  {
+    "status": "success",
+    "message": "You are authenticated."
+  }
+  ```
+- Error Response: `401 Unauthorized` (if token is invalid or expired)
 
 ## Contributing
 - Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
