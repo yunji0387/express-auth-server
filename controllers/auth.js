@@ -138,6 +138,7 @@ export async function Logout(req, res) {
             }
         });
     }
+    res.end();
 }
 
 /**
@@ -158,24 +159,13 @@ export async function Verify(req, res) {
  * @access Public
  */
 export async function GetUser(req, res) {
-    try {
-        const user = await User.findById(req.user.id);
-        const { password, ...user_data } = user._doc;
-        res.status(200).json({
-            status: "success",
-            data: [user_data],
-        });
-    }
-    catch (err) {
-        res.status(500).json({
-            error: {
-                status: "error",
-                code: 500,
-                data: [],
-                message: "Internal Server Error",
-                details: err.message,
-            }
-        });
-    }
+    res.status(200).json({
+        status: "success",
+        user: {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+        }
+    });
     res.end();
 }
