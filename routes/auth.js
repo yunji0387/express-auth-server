@@ -1,5 +1,5 @@
 import express from "express";
-import { Register, Login, Logout, Verify } from "../controllers/auth.js";
+import { Register, Login, Logout, Verify, GetUser } from "../controllers/auth.js";
 import Validate from "../middleware/validate.js";
 import { check } from "express-validator";
 import { VerifyToken } from "../middleware/verify.js";
@@ -46,5 +46,7 @@ router.post(
 router.get("/logout", Logout);
 
 router.get("/verify", VerifyToken, Verify);
+
+router.get("/user", VerifyToken, GetUser);
 
 export default router;
