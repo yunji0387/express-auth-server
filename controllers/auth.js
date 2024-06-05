@@ -169,3 +169,41 @@ export async function GetUser(req, res) {
     });
     res.end();
 }
+
+/**
+ * @route POST /auth/user
+ * @desc reset password
+ * @access Public
+ */
+export async function ResetPassword(req, res) {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({
+                error: {
+                    status: "failed",
+                    data: [],
+                    message: "User not found.",
+                }
+            });
+        }
+        // send email to user to reset password
+        // generate a token and send it to the user
+        // save the token in the database
+        // send the token to the user
+        // user can now reset password
+    }
+    catch (error) {
+        return res.status(500).json({
+            error: {
+                status: "error",
+                code: 500,
+                data: [],
+                message: "Internal Server Error.",
+                details: error.message,
+            }
+        });
+    }
+    res.end();
+}
