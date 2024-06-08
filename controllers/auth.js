@@ -233,7 +233,7 @@ export async function RequestResetPassword(req, res) {
             }
         });
     }
-    res.end();
+    // res.end();
 }
 
 /**
@@ -291,7 +291,7 @@ try {
         }
     });
 }
-res.end();
+// res.end();
 }
 
 // /**
