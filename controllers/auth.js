@@ -239,44 +239,55 @@ export async function RequestResetPassword(req, res) {
  */
 export async function ResetPassword(req, res) {
     const { token } = req.params;
-    const { password } = req.body;
-    try {
-        const user = await User.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() }
-        });
+    const { password, confirmPassword } = req.body;
 
-        if (!user) {
-            return res.status(400).json({
-                error: {
-                    status: "failed",
-                    data: [],
-                    message: "Password reset token is invalid or has expired.",
-                }
-            });
-        }
-
-        user.password = await bcrypt.hash(password, 10);
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        await user.save();
-
-        res.status(200).json({
-            status: "success",
-            message: "Password has been reset.",
-        });
-    } catch (error) {
-        return res.status(500).json({
+    if (password !== confirmPassword) {
+        return res.status(400).json({
             error: {
-                status: "error",
-                code: 500,
+                status: "failed",
                 data: [],
-                message: "Internal Server Error.",
-                details: error.message,
+                message: "Passwords do not match.",
             }
         });
     }
-    res.end();
+
+try {
+    const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+        return res.status(400).json({
+            error: {
+                status: "failed",
+                data: [],
+                message: "Password reset token is invalid or has expired.",
+            }
+        });
+    }
+
+    user.password = await bcrypt.hash(password, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+        status: "success",
+        message: "Password has been reset.",
+    });
+} catch (error) {
+    return res.status(500).json({
+        error: {
+            status: "error",
+            code: 500,
+            data: [],
+            message: "Internal Server Error.",
+            details: error.message,
+        }
+    });
+}
+res.end();
 }
 
 // /**
