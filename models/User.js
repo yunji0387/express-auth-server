@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { SECRET_ACCESS_TOKEN } from "../config/index.js";
 
 const UserSchema = new mongoose.Schema({
@@ -31,6 +32,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: "0x01",
+    },
+    resetPasswordToken: {
+        type: String,
+    },
+    resetPasswordExpires: {
+        type: Date,
     },
 }, { timestamps: true });
 
