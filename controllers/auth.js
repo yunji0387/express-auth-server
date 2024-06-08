@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import crypto from "crypto";
 import bcrypt from "bcrypt";
 import Blacklist from "../models/Blacklist.js";
 import { VerifyToken } from "../middleware/verify.js";
@@ -171,11 +172,11 @@ export async function GetUser(req, res) {
 }
 
 /**
- * @route POST /auth/user
- * @desc reset password
+ * @route POST /auth/request-reset-password
+ * @desc Request password reset
  * @access Public
  */
-export async function ResetPassword(req, res) {
+export async function RequestResetPassword(req, res) {
     const { email } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -188,13 +189,36 @@ export async function ResetPassword(req, res) {
                 }
             });
         }
-        // send email to user to reset password
-        // generate a token and send it to the user
-        // save the token in the database
-        // send the token to the user
-        // user can now reset password
-    }
-    catch (error) {
+
+        const token = user.generateResetPasswordToken();
+        await user.save();
+
+        const resetLink = `http://yourfrontend.com/reset-password/${token}`;
+
+        // Send email using EmailJS
+        const emailParams = {
+            user_email: email,
+            reset_link: resetLink,
+        };
+
+        EmailJS.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailParams, 'YOUR_USER_ID')
+            .then(response => {
+                res.status(200).json({
+                    status: "success",
+                    message: "Password reset link sent to your email address.",
+                });
+            }, error => {
+                res.status(500).json({
+                    error: {
+                        status: "error",
+                        code: 500,
+                        data: [],
+                        message: "Failed to send reset email.",
+                        details: error.text,
+                    }
+                });
+            });
+    } catch (error) {
         return res.status(500).json({
             error: {
                 status: "error",
@@ -207,3 +231,88 @@ export async function ResetPassword(req, res) {
     }
     res.end();
 }
+
+/**
+ * @route POST /auth/reset-password/:token
+ * @desc Reset password
+ * @access Public
+ */
+export async function ResetPassword(req, res) {
+    const { token } = req.params;
+    const { password } = req.body;
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({
+                error: {
+                    status: "failed",
+                    data: [],
+                    message: "Password reset token is invalid or has expired.",
+                }
+            });
+        }
+
+        user.password = await bcrypt.hash(password, 10);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.status(200).json({
+            status: "success",
+            message: "Password has been reset.",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: {
+                status: "error",
+                code: 500,
+                data: [],
+                message: "Internal Server Error.",
+                details: error.message,
+            }
+        });
+    }
+    res.end();
+}
+
+// /**
+//  * @route POST /auth/user
+//  * @desc reset password
+//  * @access Public
+//  */
+// export async function ResetPassword(req, res) {
+//     const { email } = req.body;
+//     try {
+//         const user = await User.findOne({ email });
+//         if (!user) {
+//             return res.status(404).json({
+//                 error: {
+//                     status: "failed",
+//                     data: [],
+//                     message: "User not found.",
+//                 }
+//             });
+//         }
+//         // send email to user to reset password
+//         // generate a token and send it to the user
+//         // save the token in the database
+//         // send the token to the user
+//         // user can now reset password
+//     }
+//     catch (error) {
+//         return res.status(500).json({
+//             error: {
+//                 status: "error",
+//                 code: 500,
+//                 data: [],
+//                 message: "Internal Server Error.",
+//                 details: error.message,
+//             }
+//         });
+//     }
+//     res.end();
+// }

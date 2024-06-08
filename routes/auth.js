@@ -1,5 +1,5 @@
 import express from "express";
-import { Register, Login, Logout, Verify, GetUser, ResetPassword } from "../controllers/auth.js";
+import { Register, Login, Logout, Verify, GetUser, RequestResetPassword, ResetPassword } from "../controllers/auth.js";
 import Validate from "../middleware/validate.js";
 import { check } from "express-validator";
 import { VerifyToken } from "../middleware/verify.js";
@@ -50,4 +50,9 @@ router.get("/verify", VerifyToken, Verify);
 router.get("/user", VerifyToken, GetUser);
 
 router.post("/reset-password", ResetPassword);
+
+router.post('/auth/request-reset-password', RequestResetPassword);
+
+router.post('/auth/reset-password/:token', ResetPassword);
+
 export default router;
