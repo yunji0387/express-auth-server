@@ -64,4 +64,11 @@ UserSchema.methods.generateAccessJWT = function () {
     });
 };
 
+UserSchema.methods.generateResetPasswordToken = function () {
+    const token = crypto.randomBytes(20).toString("hex");
+    this.resetPasswordToken = token;
+    this.resetPasswordExpires = Date.now() + 3600000 // expires in an hour
+    return token;
+};
+
 export default mongoose.model("User", UserSchema);
