@@ -3,6 +3,9 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 import Blacklist from "../models/Blacklist.js";
 import { VerifyToken } from "../middleware/verify.js";
+import emailjs from "@emailjs/browser";
+
+emailjs.init(process.env.EMAILJS_USER_ID);
 
 /**
  * @route POST /auth/register
@@ -201,7 +204,7 @@ export async function RequestResetPassword(req, res) {
             reset_link: resetLink,
         };
 
-        EmailJS.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailParams, 'YOUR_USER_ID')
+        emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams, process.env.EMAILJS_USER_ID)
             .then(response => {
                 res.status(200).json({
                     status: "success",
