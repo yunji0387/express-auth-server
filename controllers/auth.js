@@ -3,27 +3,26 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 import Blacklist from "../models/Blacklist.js";
 import { VerifyToken } from "../middleware/verify.js";
-import emailjs from "@emailjs/browser";
+// import emailjs from "@emailjs/browser";
+import transporter from '../config/nodemailer.js';
 
-// emailjs.init(process.env.EMAILJS_USER_ID);
-
-emailjs.init({
-    publicKey: process.env.EMAILJS_USER_ID,
-    // Do not allow headless browsers
-    blockHeadless: true,
-    blockList: {
-      // Block the suspended emails
-      list: [],
-      // The variable contains the email address
-      watchVariable: 'userEmail',
-    },
-    limitRate: {
-      // Set the limit rate for the application
-      id: 'app',
-      // Allow 1 request per 10s
-      throttle: 10000,
-    },
-  });
+// emailjs.init({
+//     publicKey: process.env.EMAILJS_USER_ID,
+//     // Do not allow headless browsers
+//     blockHeadless: true,
+//     blockList: {
+//       // Block the suspended emails
+//       list: [],
+//       // The variable contains the email address
+//       watchVariable: 'userEmail',
+//     },
+//     limitRate: {
+//       // Set the limit rate for the application
+//       id: 'app',
+//       // Allow 1 request per 10s
+//       throttle: 10000,
+//     },
+//   });
 
 /**
  * @route POST /auth/register
@@ -198,8 +197,6 @@ export async function GetUser(req, res) {
  * @access Public
  */
 export async function RequestResetPassword(req, res) {
-    console.log("EmailJS User ID:", process.env.EMAILJS_USER_ID);
-
     const { email } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -216,34 +213,41 @@ export async function RequestResetPassword(req, res) {
         const token = user.generateResetPasswordToken();
         await user.save();
 
-        // const resetLink = `https://next-form-app-auth-backend-fb01c8c171e9.herokuapp.com/reset-password/${token}`;
         const resetLink = `http://localhost:5005/reset-password/${token}`;
 
-        // Send email using EmailJS
-        const emailParams = {
-            user_email: email,
-            reset_link: resetLink,
+        // Send email using Nodemailer
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Password Reset Request',
+            html: `
+                <p>You requested a password reset. Please click on the link below to reset your password:</p>
+                <a href="${resetLink}">Reset Password</a>
+                <p>If you didn't request this, please ignore this email.</p>
+            `,
         };
 
-        // emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams, process.env.EMAILJS_USER_ID)
-        emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams)
-            .then((response) => {
-                res.status(200).json({
-                    status: "success",
-                    message: "Password reset link sent to your email address.",
-                });
-            }, (error) => {
-                res.status(500).json({
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error("Failed to send reset email:", error);
+                return res.status(500).json({
                     error: {
                         status: "error",
                         code: 500,
                         data: [],
                         message: "Failed to send reset email.",
-                        details: error.text,
+                        details: error.message,
                     }
                 });
-            });
+            } else {
+                res.status(200).json({
+                    status: "success",
+                    message: "Password reset link sent to your email address.",
+                });
+            }
+        });
     } catch (error) {
+        console.error("Internal Server Error:", error);
         return res.status(500).json({
             error: {
                 status: "error",
@@ -254,7 +258,6 @@ export async function RequestResetPassword(req, res) {
             }
         });
     }
-    // res.end();
 }
 
 /**
@@ -314,3 +317,68 @@ try {
 }
 // res.end();
 }
+
+// /**
+//  * @route POST /auth/request-reset-password
+//  * @desc Request password reset
+//  * @access Public
+//  */
+// export async function RequestResetPassword(req, res) {
+//     console.log("EmailJS User ID:", process.env.EMAILJS_USER_ID);
+
+//     const { email } = req.body;
+//     try {
+//         const user = await User.findOne({ email });
+//         if (!user) {
+//             return res.status(404).json({
+//                 error: {
+//                     status: "failed",
+//                     data: [],
+//                     message: "User not found.",
+//                 }
+//             });
+//         }
+
+//         const token = user.generateResetPasswordToken();
+//         await user.save();
+
+//         // const resetLink = `https://next-form-app-auth-backend-fb01c8c171e9.herokuapp.com/reset-password/${token}`;
+//         const resetLink = `http://localhost:5005/reset-password/${token}`;
+
+//         // Send email using EmailJS
+//         const emailParams = {
+//             user_email: email,
+//             reset_link: resetLink,
+//         };
+
+//         // emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams, process.env.EMAILJS_USER_ID)
+//         emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams)
+//             .then((response) => {
+//                 res.status(200).json({
+//                     status: "success",
+//                     message: "Password reset link sent to your email address.",
+//                 });
+//             }, (error) => {
+//                 res.status(500).json({
+//                     error: {
+//                         status: "error",
+//                         code: 500,
+//                         data: [],
+//                         message: "Failed to send reset email.",
+//                         details: error.text,
+//                     }
+//                 });
+//             });
+//     } catch (error) {
+//         return res.status(500).json({
+//             error: {
+//                 status: "error",
+//                 code: 500,
+//                 data: [],
+//                 message: "Internal Server Error.",
+//                 details: error.message,
+//             }
+//         });
+//     }
+//     // res.end();
+// }
