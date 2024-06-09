@@ -2,8 +2,10 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
+import path from "path";
 import { PORT, URI } from "./config/index.js";
 import App from "./routes/index.js";
+import { fileURLToPath } from 'url';
 
 const server = express();
 
@@ -19,6 +21,13 @@ server.disable("x-powered-by");
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Set up EJS
+server.set('view engine', 'ejs');
+server.set('views', path.join(__dirname, 'views'));
 
 mongoose.promise = global.Promise;
 mongoose.set("strictQuery", false);
