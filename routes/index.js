@@ -23,6 +23,10 @@ app.get("/", (req, res) => {
     }
 });
 
+app.get("/reset-password/:token", (req, res) => {
+    res.render("reset-password", { token: req.params.token });
+});
+
 app.get("/user", VerifyToken, (req, res) => {
     res.status(200).json({
         status: "success",
