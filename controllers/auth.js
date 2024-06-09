@@ -198,6 +198,8 @@ export async function GetUser(req, res) {
  * @access Public
  */
 export async function RequestResetPassword(req, res) {
+    console.log("EmailJS User ID:", process.env.EMAILJS_USER_ID);
+
     const { email } = req.body;
     try {
         const user = await User.findOne({ email });
