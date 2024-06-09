@@ -5,7 +5,25 @@ import Blacklist from "../models/Blacklist.js";
 import { VerifyToken } from "../middleware/verify.js";
 import emailjs from "@emailjs/browser";
 
-emailjs.init(process.env.EMAILJS_USER_ID);
+// emailjs.init(process.env.EMAILJS_USER_ID);
+
+emailjs.init({
+    publicKey: process.env.EMAILJS_USER_ID,
+    // Do not allow headless browsers
+    blockHeadless: true,
+    blockList: {
+      // Block the suspended emails
+      list: [],
+      // The variable contains the email address
+      watchVariable: 'userEmail',
+    },
+    limitRate: {
+      // Set the limit rate for the application
+      id: 'app',
+      // Allow 1 request per 10s
+      throttle: 10000,
+    },
+  });
 
 /**
  * @route POST /auth/register
@@ -205,7 +223,8 @@ export async function RequestResetPassword(req, res) {
             reset_link: resetLink,
         };
 
-        emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams, process.env.EMAILJS_USER_ID)
+        // emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams, process.env.EMAILJS_USER_ID)
+        emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams)
             .then(response => {
                 res.status(200).json({
                     status: "success",
