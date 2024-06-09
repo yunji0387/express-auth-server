@@ -225,12 +225,12 @@ export async function RequestResetPassword(req, res) {
 
         // emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams, process.env.EMAILJS_USER_ID)
         emailjs.send('service_9ar56ir', 'template_1h86dmp', emailParams)
-            .then(response => {
+            .then((response) => {
                 res.status(200).json({
                     status: "success",
                     message: "Password reset link sent to your email address.",
                 });
-            }, error => {
+            }, (error) => {
                 res.status(500).json({
                     error: {
                         status: "error",
