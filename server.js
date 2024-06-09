@@ -20,6 +20,7 @@ server.use(cors(corsOptions)); // Use CORS with specified options
 server.disable("x-powered-by");
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
+server.use(express.static('public'));
 server.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
