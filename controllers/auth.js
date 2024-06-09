@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import Blacklist from "../models/Blacklist.js";
 import { VerifyToken } from "../middleware/verify.js";
 // import emailjs from "@emailjs/browser";
-import transporter from '../config/nodemailer.js';
+import { transporter } from '../config/index.js';
 
 // emailjs.init({
 //     publicKey: process.env.EMAILJS_USER_ID,
@@ -213,6 +213,7 @@ export async function RequestResetPassword(req, res) {
         const token = user.generateResetPasswordToken();
         await user.save();
 
+        // const resetLink = `https://next-form-app-auth-backend-fb01c8c171e9.herokuapp.com/reset-password/${token}`;
         const resetLink = `http://localhost:5005/reset-password/${token}`;
 
         // Send email using Nodemailer
@@ -279,43 +280,43 @@ export async function ResetPassword(req, res) {
         });
     }
 
-try {
-    const user = await User.findOne({
-        resetPasswordToken: token,
-        resetPasswordExpires: { $gt: Date.now() }
-    });
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
 
-    if (!user) {
-        return res.status(400).json({
+        if (!user) {
+            return res.status(400).json({
+                error: {
+                    status: "failed",
+                    data: [],
+                    message: "Password reset token is invalid or has expired.",
+                }
+            });
+        }
+
+        user.password = await bcrypt.hash(password, 10);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.status(200).json({
+            status: "success",
+            message: "Password has been reset.",
+        });
+    } catch (error) {
+        return res.status(500).json({
             error: {
-                status: "failed",
+                status: "error",
+                code: 500,
                 data: [],
-                message: "Password reset token is invalid or has expired.",
+                message: "Internal Server Error.",
+                details: error.message,
             }
         });
     }
-
-    user.password = await bcrypt.hash(password, 10);
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
-    await user.save();
-
-    res.status(200).json({
-        status: "success",
-        message: "Password has been reset.",
-    });
-} catch (error) {
-    return res.status(500).json({
-        error: {
-            status: "error",
-            code: 500,
-            data: [],
-            message: "Internal Server Error.",
-            details: error.message,
-        }
-    });
-}
-// res.end();
+    // res.end();
 }
 
 // /**
