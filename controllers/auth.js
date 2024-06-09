@@ -194,8 +194,8 @@ export async function RequestResetPassword(req, res) {
         const token = user.generateResetPasswordToken();
         await user.save();
 
-        // const resetLink = `https://next-form-app-auth-backend-fb01c8c171e9.herokuapp.com/reset-password/${token}`;
-        const resetLink = `http://localhost:5005/reset-password/${token}`;
+        const resetLink = `https://next-form-app-auth-backend-fb01c8c171e9.herokuapp.com/reset-password/${token}`;
+        // const resetLink = `http://localhost:5005/reset-password/${token}`;
 
         // Send email using Nodemailer
         const mailOptions = {
