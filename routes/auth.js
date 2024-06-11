@@ -49,8 +49,6 @@ router.get("/verify", VerifyToken, Verify);
 
 router.get("/user", VerifyToken, GetUser);
 
-router.post("/reset-password", ResetPassword);
-
 router.post("/request-reset-password", RequestResetPassword);
 
 router.post("/reset-password/:token", ResetPassword);
