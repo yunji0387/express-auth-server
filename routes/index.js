@@ -7,6 +7,7 @@ const app = express();
 app.disable("x-powered-by");
 
 app.use('/auth', Auth);
+app.use(express.static('public'));
 
 app.get("/", (req, res) => {
     try {
