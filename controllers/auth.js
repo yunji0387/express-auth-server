@@ -299,3 +299,44 @@ export async function ResetPassword(req, res) {
     }
     // res.end();
 }
+
+/**
+ * @route GET /auth/verify-reset-password/:token
+ * @desc Verify reset password token
+ * @access Public
+ */
+export async function VerifyResetPasswordToken(req, res) {
+    const { token } = req.params;
+
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({
+                error: {
+                    status: "failed",
+                    data: [],
+                    message: "Password reset token is invalid or has expired.",
+                }
+            });
+        }
+
+        res.status(200).json({
+            status: "success",
+            message: "Password reset token is valid.",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: {
+                status: "error",
+                code: 500,
+                data: [],
+                message: "Internal Server Error.",
+                details: error.message,
+            }
+        });
+    }
+}
