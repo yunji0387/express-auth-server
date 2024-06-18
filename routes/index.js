@@ -5,6 +5,14 @@ import { VerifyToken, VerifyRole } from "../middleware/verify.js";
 
 const app = express();
 
+// Define CORS options
+const corsOptions = {
+    origin: ['http://localhost:3000', 'https://next-form-app-pi.vercel.app'], // List of allowed origins
+    credentials: true, // Allow credentials
+    optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 app.disable("x-powered-by");
 
 app.use('/auth', Auth);
