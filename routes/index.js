@@ -1,5 +1,6 @@
 import express from "express";
 import Auth from "./auth.js";
+import path from "path";
 import { VerifyToken, VerifyRole } from "../middleware/verify.js";
 
 const app = express();
@@ -8,6 +9,13 @@ app.disable("x-powered-by");
 
 app.use('/auth', Auth);
 app.use(express.static('public'));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Set up EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.get("/", (req, res) => {
     try {
