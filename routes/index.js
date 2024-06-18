@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import Auth from "./auth.js";
 import path from "path";
 import { VerifyToken, VerifyRole } from "../middleware/verify.js";
