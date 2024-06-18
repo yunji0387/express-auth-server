@@ -1,5 +1,5 @@
 import express from "express";
-import { Register, Login, Logout, Verify, GetUser, RequestResetPassword, ResetPassword } from "../controllers/auth.js";
+import { Register, Login, Logout, Verify, GetUser, RequestResetPassword, ResetPassword, VerifyResetPasswordToken } from "../controllers/auth.js";
 import Validate from "../middleware/validate.js";
 import { check } from "express-validator";
 import { VerifyToken } from "../middleware/verify.js";
