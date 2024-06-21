@@ -22,6 +22,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 400px;
+            min-width: 350px;
             width: 100%;
         }
 
@@ -61,8 +62,8 @@
 
         .show-password-button {
             position: absolute;
-            /* right: 10px; */
-            /* top: 50%; */
+            right: 10px;
+            top: 70%;
             transform: translateY(-50%);
             background: none;
             border: none;
@@ -160,7 +161,7 @@
             <div class="input-container">
                 <label for="password">New Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password here" required>
-                <!-- <button type="button" class="show-password-button" onclick="togglePasswordVisibility('password')">Show</button> -->
+                <button type="button" class="show-password-button" onclick="togglePasswordVisibility('password')">Show</button>
             </div>
             <div class="error" id="password-error"></div>
             <div class="input-container">
