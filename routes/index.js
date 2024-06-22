@@ -4,7 +4,7 @@ import { VerifyToken, VerifyRole } from "../middleware/verify.js";
 
 const app = express();
 
-app.disable("x-powered-by");
+// app.disable("x-powered-by");
 
 app.use('/auth', Auth);
 
@@ -23,18 +23,22 @@ app.get("/", (req, res) => {
     }
 });
 
-app.get("/user", VerifyToken, (req, res) => {
-    res.status(200).json({
-        status: "success",
-        message: "Welcome to your Dashboard.",
-    });
+app.get("/reset-password/:token", (req, res) => {
+    res.render("reset-password", { token: req.params.token });
 });
 
-app.get("/admin", VerifyToken, VerifyRole, (req, res) => {
-    res.status(200).json({
-        status: "success",
-        message: "Welcome to the Admin portal!",
-    });
-});
+// app.get("/user", VerifyToken, (req, res) => {
+//     res.status(200).json({
+//         status: "success",
+//         message: "Welcome to your Dashboard.",
+//     });
+// });
+
+// app.get("/admin", VerifyToken, VerifyRole, (req, res) => {
+//     res.status(200).json({
+//         status: "success",
+//         message: "Welcome to the Admin portal!",
+//     });
+// });
 
 export default app;
