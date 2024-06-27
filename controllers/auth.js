@@ -340,3 +340,12 @@ export async function VerifyResetPasswordToken(req, res) {
         });
     }
 }
+
+/**
+ * @route GET /auth/google
+ * @desc Google OAuth
+ * @access Public
+ */
+export async function GoogleAuth(req, res) {
+    res.json({ message: "Google Auth"});
+}
