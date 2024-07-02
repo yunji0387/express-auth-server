@@ -1,4 +1,5 @@
 import express from "express";
+import { passport } from '../config/index.js';
 import { Register, Login, Logout, Verify, GetUser, RequestResetPassword, ResetPassword, VerifyResetPasswordToken, GoogleAuth } from "../controllers/auth.js";
 import Validate from "../middleware/validate.js";
 import { check } from "express-validator";
