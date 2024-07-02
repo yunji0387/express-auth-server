@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
-const { URI, PORT, SECRET_ACCESS_TOKEN, EMAIL_USER, NODEMAILER_PASS, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
+const { URI, PORT, SECRET_ACCESS_TOKEN, EMAIL_USER, NODEMAILER_PASS, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, COOKIE_KEY } = process.env;
 
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -56,7 +56,7 @@ passport.deserializeUser(async (data, done) => {
   }
 });
 
-export { URI, PORT, SECRET_ACCESS_TOKEN, transporter, passport };
+export { URI, PORT, SECRET_ACCESS_TOKEN, transporter, passport, COOKIE_KEY };
 
 
 // import * as dotenv from 'dotenv';
