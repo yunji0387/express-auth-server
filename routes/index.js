@@ -1,8 +1,8 @@
 import express from 'express';
 import cookieSession from 'cookie-session';
-import { passport, COOKIE_KEY } from './config/index.js'; // Ensure to import your configuration which includes passport
+import { passport, COOKIE_KEY } from '../config/index.js'; // Ensure to import your configuration which includes passport
 import Auth from './auth.js';
-import './config/index.js';  // Ensure to import your configuration which includes passport
+// import './config/index.js';  // Ensure to import your configuration which includes passport
 
 const app = express();
 
