@@ -57,4 +57,19 @@ router.get("/verify-reset-password-token/:token", VerifyResetPasswordToken );
 
 router.get("/google", GoogleAuth);
 
+router.get("/google/callback",
+    passport.authenticate('google', { failureRedirect: '/' }),
+    (req, res) => {
+        // Successful authentication, issue a JWT token
+        const token = req.user.token;
+        res.cookie("SessionID", token, {
+            maxAge: 20 * 60 * 1000, // 20 minutes
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
+        });
+        res.redirect('/');
+    }
+);
+
 export default router;
