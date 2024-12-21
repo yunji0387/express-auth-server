@@ -17,10 +17,10 @@
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
-    "express-validator": "^7.1.0",
+    "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.3",
-    "nodemailer": "^6.9.13"
+    "mongoose": "^8.6.2",
+    "nodemailer": "^6.9.14"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
