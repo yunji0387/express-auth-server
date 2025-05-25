@@ -69,8 +69,8 @@ export async function Login(req, res) {
                 }
             });
         }
-        const isPasswordVaild = await bcrypt.compare(String(req.body.password), user.password);
-        if (!isPasswordVaild) {
+        const isPasswordValid = await bcrypt.compare(String(req.body.password), user.password);
+        if (!isPasswordValid) {
             return res.status(401).json({
                 error: {
                     status: "failed",
@@ -339,4 +339,13 @@ export async function VerifyResetPasswordToken(req, res) {
             }
         });
     }
+}
+
+/**
+ * @route GET /auth/google
+ * @desc Google OAuth
+ * @access Public
+ */
+export async function GoogleAuth(req, res) {
+    res.json({ message: "Google Auth"});
 }
