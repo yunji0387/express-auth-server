@@ -15,23 +15,47 @@ Before you begin, ensure you have met the following requirements:
 - Node.js and npm installed
 - MongoDB running locally or remotely (update connection URI accordingly)
 
-## Installation
+## Installation and Local Setup
 
 To install the necessary packages, run the following command:
 
+1. Clone the repository:
+```bash
+git clone [repository URL]
+```
+
+2. Navigate to the project directory:
+```bash
+cd [project directory]
+```
+
+3. Install dependencies:
 ```bash
 npm install
 ```
 
-## Configuration
-Create a .env file in the root directory and update it with your MongoDB URI and any other configurations such as your secret key for JWT.
+4. Create a .env file in the project root and add:
+  - MongoDB URI:
+    ```bash
+    URI=[your MongoDB URI]
+    ```
+  - PORT:
+    ```bash
+    PORT=5005
+    ```
+  - SECRET_ACCESS_TOKEN:
+    ```bash
+    SECRET_ACCESS_TOKEN=[your secret key for JWT]
+    ```
 
-- Example .env file:
-  ```md
-  PORT=5000
-  URI=mongodb://localhost:27017/myauthdb
-  SECRET_ACCESS_TOKEN=your_secret_key
-  ```
+## Usage
+To start the server, run:
+```bash
+node server.js
+```
+The server will start running on http://localhost:5005.
+
+---
 
 ## Running the Server
 
@@ -40,6 +64,26 @@ To start the server, run:
 npm start
 ```
 The server will start running on http://localhost:5000.
+
+## Docker Setup
+
+You can also run this project using Docker:
+
+1. **Build the Docker image:**
+   ```bash
+   docker build -t next-form-app-auth-backend .
+   ```
+
+2. **Run the Docker container:**
+   ```bash
+   docker run -p 5005:5005 --env-file .env next-form-app-auth-backend
+   ```
+
+Make sure your `.env` file (with `URI=[your MongoDB URI]`, `PORT=5005`, `SECRET_ACCESS_TOKEN=[your secret key]`) is present in the project root.
+
+The server will be accessible at [http://localhost:5005](http://localhost:5005).
+
+---
 
 ## API Endpoints
 ### Register
