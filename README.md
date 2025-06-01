@@ -48,22 +48,14 @@ npm install
     SECRET_ACCESS_TOKEN=[your secret key for JWT]
     ```
 
-## Usage
-To start the server, run:
-```bash
-node server.js
-```
-The server will start running on http://localhost:5005.
-
----
-
-## Running the Server
-
+## Running the Server Locally
 To start the server, run:
 ```bash
 npm start
 ```
-The server will start running on http://localhost:5000.
+The server will start running on http://localhost:5005.
+
+---
 
 ## Docker Setup
 
