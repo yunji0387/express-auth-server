@@ -10,19 +10,19 @@ dotenv.config();
 const { URI, PORT, SECRET_ACCESS_TOKEN, EMAIL_USER, NODEMAILER_PASS, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, COOKIE_KEY } = process.env;
 
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: EMAIL_USER,
-        pass: NODEMAILER_PASS,
-    },
+  service: 'Gmail',
+  auth: {
+    user: EMAIL_USER,
+    pass: NODEMAILER_PASS,
+  },
 });
 
 // Passport Configuration
 passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
-  },
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: "/auth/google/callback"
+},
   async (accessToken, refreshToken, profile, done) => {
     try {
       let user = await User.findOne({ googleId: profile.id });
@@ -57,21 +57,3 @@ passport.deserializeUser(async (data, done) => {
 });
 
 export { URI, PORT, SECRET_ACCESS_TOKEN, transporter, passport, COOKIE_KEY };
-
-
-// import * as dotenv from 'dotenv';
-// import nodemailer from 'nodemailer';
-
-// dotenv.config();
-
-// const { URI, PORT, SECRET_ACCESS_TOKEN, EMAIL_USER, NODEMAILER_PASS } = process.env;
-
-// const transporter = nodemailer.createTransport({
-//     service: 'Gmail',
-//     auth: {
-//         user: EMAIL_USER,
-//         pass: NODEMAILER_PASS,
-//     },
-// });
-
-// export { URI, PORT, SECRET_ACCESS_TOKEN, transporter };
