@@ -53,7 +53,7 @@ describe('Logout Controller', () => {
     mockFindOne.mockResolvedValue({ token: 'mocktoken' });
     await Logout(req, res);
     expect(mockFindOne).toHaveBeenCalledWith({ token: 'mocktoken' });
-    expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.sendStatus).toHaveBeenCalledWith(204);
   });
 
   it('should blacklist the token and return 200', async () => {
