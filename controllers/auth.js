@@ -119,9 +119,9 @@ export async function Logout(req, res) {
         if (!authHeader) return res.sendStatus(204); // No content
         const cookie = authHeader.split("=")[1];
         const accessToken = cookie.split(';')[0];
-        const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken.token });
+        const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken });
 
-        if (checkIfBlacklisted) return res.status(204); // No content
+        if (checkIfBlacklisted) return res.sendStatus(204); // No content
 
         //else blacklist the token
         const newBlacklist = new Blacklist({ token: accessToken });
@@ -297,7 +297,6 @@ export async function ResetPassword(req, res) {
             }
         });
     }
-    // res.end();
 }
 
 /**

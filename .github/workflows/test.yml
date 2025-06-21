@@ -32,5 +32,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set dummy Google OAuth env
+        run: |
+          echo "GOOGLE_CLIENT_ID=dummy" >> $GITHUB_ENV
+          echo "GOOGLE_CLIENT_SECRET=dummy" >> $GITHUB_ENV
+
       - name: Run tests with coverage (ESM)
         run: node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage
