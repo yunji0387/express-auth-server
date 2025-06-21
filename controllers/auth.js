@@ -121,7 +121,7 @@ export async function Logout(req, res) {
         const accessToken = cookie.split(';')[0];
         const checkIfBlacklisted = await Blacklist.findOne({ token: accessToken });
 
-        if (checkIfBlacklisted) return res.status(204); // No content
+        if (checkIfBlacklisted) return res.sendStatus(204); // No content
 
         //else blacklist the token
         const newBlacklist = new Blacklist({ token: accessToken });
