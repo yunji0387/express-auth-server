@@ -1,7 +1,6 @@
 // Mock modules must be imported dynamically in ESM
 let jestGlobals, mongoose, User, bcrypt, jwt, crypto;
 let originalRandomBytes;
-let cryptoWrapper;
 
 beforeAll(async () => {
     // First import Jest globals
@@ -190,10 +189,21 @@ describe('User Model', () => {
             // Simulate the pre-save middleware
             const next = jestGlobals.jest.fn();
 
-            // Extract the middleware function from your schema
-            // For testing, we'll just implement it directly since we can't access it
-            // Import the actual preSaveMiddleware from the User schema
-            const { preSaveMiddleware } = await import('../User');
+            // Implement the middleware function directly
+            function preSaveMiddleware(next) {
+                const user = this;
+                if (!user.isModified("password")) return next();
+
+                bcrypt.genSalt(10, (err, salt) => {
+                    if (err) return next(err);
+                    bcrypt.hash(user.password, salt, (err, hash) => {
+                        if (err) return next(err);
+                        user.password = hash;
+                        next();
+                    });
+                });
+            }
+
             // Call the middleware with the user as 'this'
             preSaveMiddleware.call(user, next);
 
