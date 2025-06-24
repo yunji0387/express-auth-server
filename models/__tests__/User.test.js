@@ -10,9 +10,6 @@ beforeAll(async () => {
 
     crypto = await import('crypto');
     originalRandomBytes = crypto.randomBytes.bind(crypto);
-    cryptoWrapper = {
-        randomBytes: (...args) => originalRandomBytes(...args)
-    };
 
     // Mock mongoose to prevent real DB connections
     await jest.unstable_mockModule('mongoose', () => ({
