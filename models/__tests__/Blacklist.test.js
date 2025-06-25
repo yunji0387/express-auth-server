@@ -72,6 +72,9 @@ describe('Blacklist Model', () => {
     });
 
     describe('TTL Index', () => {
+        beforeEach(() => {
+            schemaInstance._indexes = [];
+        });
         it('should have a TTL index on createdAt with 1 hour expiry', () => {
             // Find the TTL index
             const ttlIndex = schemaInstance._indexes.find(index =>
