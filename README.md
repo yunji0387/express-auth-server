@@ -1,4 +1,4 @@
-# Next Admin System Express Authentication Server
+# Express Authentication Server
 
 This Node.js Express server handles user authentication including registration, login, logout, and session validation.
 
