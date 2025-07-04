@@ -1,6 +1,6 @@
-# Contributing to Next Admin System Express Authentication Server
+# Contributing to Express Authentication Server
 
-First off, thank you for considering contributing to the Next Form Data Auth Server. It's people like you that make it a great tool.
+First off, thank you for considering contributing to the Express Authentication Server. It's people like you that make it a great tool.
 
 ## How Can I Contribute?
 
@@ -24,7 +24,7 @@ This section guides you through submitting an enhancement suggestion, including 
 
 ### Your First Code Contribution
 
-Unsure where to begin contributing to Next Form Data Auth Server? You can start by looking through 'beginner' and 'help-wanted' issues:
+Unsure where to begin contributing to Express Authentication Server? You can start by looking through 'beginner' and 'help-wanted' issues:
 
 - **Beginner issues** - issues that should only require a few lines of code, and a test or two.
 - **Help wanted issues** - issues that may need a bit more effort or knowledge about the project.
@@ -53,4 +53,4 @@ All JavaScript must adhere to [JavaScript Standard Style](https://standardjs.com
 
 ## License
 
-By contributing to Next Form Data Auth Server, you agree that your contributions will be licensed under its MIT License.
+By contributing to Express Authentication Server, you agree that your contributions will be licensed under its MIT License.
