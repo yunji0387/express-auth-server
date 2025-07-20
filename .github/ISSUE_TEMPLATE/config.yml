@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and Discussions
+    url: https://github.com/yunji0387/next-form-app-auth-backend/discussions
+    about: Use GitHub Discussions to ask questions and/or open discussion topics.
+  - name: Documentation
+    url: https://github.com/yunji0387/next-form-app-auth-backend?tab=readme-ov-file#readme
+    about: Read the documentation.
