@@ -12,7 +12,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/yunji0387/express-auth-server)](https://github.com/yunji0387/express-auth-server/stargazers)
 
 [![Code Coverage](https://img.shields.io/badge/coverage-87%25-brightgreen)](https://github.com/yunji0387/express-auth-server)
-[![Security Rating](https://img.shields.io/badge/security-A-brightgreen)](https://github.com/yunji0387/express-auth-server/security)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/yunji0387/express-auth-server/graphs/commit-activity)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
