@@ -14,9 +14,6 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/yunji0387/express-auth-server/graphs/commit-activity)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-<!-- [![npm version](https://img.shields.io/npm/v/express-auth-server?color=brightgreen)](https://www.npmjs.com/package/express-auth-server) -->
-<!-- [![Docker Image Size](https://img.shields.io/docker/image-size/yunji0387/express-auth-server?color=blue)](https://hub.docker.com/r/yunji0387/express-auth-server) -->
-
 A robust and secure Node.js Express server providing complete user authentication functionality including registration, login, logout, password reset, and session validation with JWT tokens and OAuth integration.
 
 ## ✨ Features
