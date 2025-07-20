@@ -1,7 +1,7 @@
 {
-  "name": "next-form-app-auth-backend",
+  "name": "express-auth-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "A robust and secure Node.js Express server providing complete user authentication functionality including registration, login, logout, password reset, and session validation with JWT tokens and OAuth integration.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
