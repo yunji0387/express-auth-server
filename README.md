@@ -318,7 +318,7 @@ npm run test:coverage
 npm test -- auth.test.js
 ```
 
-**Current Coverage:** 87%+ across all modules
+**Current Coverage:** Run `npm run test:coverage` to view the latest coverage report.
 
 ## 🤝 Contributing
 
