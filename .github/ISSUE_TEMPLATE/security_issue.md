@@ -1,3 +1,11 @@
+---
+name: Security issue
+about: Report a security vulnerability (use responsibly)
+title: '[SECURITY] '
+labels: ['security']
+assignees: ''
+---
+
 # Security Issue Report
 
 Thank you for reporting a potential security issue.

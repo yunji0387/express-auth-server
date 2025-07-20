@@ -1,3 +1,11 @@
+---
+name: Documentation
+about: Report an issue or suggest improvements for documentation
+title: '[DOCS] '
+labels: ['documentation']
+assignees: ''
+---
+
 # 📚 Documentation Issue
 
 ## Description

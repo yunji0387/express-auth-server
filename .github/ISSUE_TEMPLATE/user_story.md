@@ -1,3 +1,11 @@
+---
+name: User Story
+about: Create a user story for new functionality
+title: '[USER STORY] '
+labels: ['user-story', 'enhancement']
+assignees: ''
+---
+
 # User Story
 
 ## Title
