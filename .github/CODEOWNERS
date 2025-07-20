@@ -1,0 +1,17 @@
+# Global code owners
+* @yunji0387
+
+# Specific file/directory owners
+/.github/ @yunji0387
+/package.json @yunji0387
+/server.js @yunji0387
+
+# Security and config files
+/.env* @yunji0387
+/config/ @yunji0387
+/middleware/ @yunji0387
+
+# Documentation
+/README.md @yunji0387
+/CONTRIBUTING.md @yunji0387
+/LICENSE.md @yunji0387
