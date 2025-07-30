@@ -4,11 +4,20 @@ import { Register, Login, Logout, Verify, GetUser, RequestResetPassword, ResetPa
 import Validate from "../middleware/validate.js";
 import { check } from "express-validator";
 import { VerifyToken } from "../middleware/verify.js";
+import rateLimit from "express-rate-limit";
+
+// Rate limiter for registration: max 5 requests per IP per hour
+const registerLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5,
+    message: "Too many accounts created from this IP, please try again after an hour"
+});
 
 const router = express.Router();
 
 router.post(
     "/register",
+    registerLimiter,
     check("email")
         .isEmail()
         .withMessage("Enter a valid email address")
