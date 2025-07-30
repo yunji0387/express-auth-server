@@ -52,7 +52,7 @@ describe('Register Controller', () => {
     await Register(req, res);
 
     // Verify the behavior
-    expect(mockFindOne).toHaveBeenCalledWith({ email: 'john@example.com' });
+    expect(mockFindOne).toHaveBeenCalledWith({ email: { $eq: 'john@example.com' } });
     expect(mockSave).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
@@ -74,6 +74,7 @@ describe('Register Controller', () => {
     await Register(req, res);
 
     // Verify the behavior
+    expect(mockFindOne).toHaveBeenCalledWith({ email: { $eq: 'john@example.com' } });
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
       error: {
