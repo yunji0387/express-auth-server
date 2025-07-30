@@ -20,7 +20,7 @@ export async function Register(req, res) {
             password,
         });
 
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email: { $eq: email } });
         if (existingUser) {
             return res.status(400).json({
                 error: {
