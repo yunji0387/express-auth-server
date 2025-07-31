@@ -13,6 +13,13 @@ const registerLimiter = rateLimit({
     message: "Too many accounts created from this IP, please try again after an hour"
 });
 
+// Rate limiter for login: max 10 requests per IP per hour
+const loginLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 10,
+    message: "Too many login attempts from this IP, please try again after an hour"
+});
+
 const router = express.Router();
 
 router.post(
@@ -44,6 +51,7 @@ router.post(
 
 router.post(
     "/login",
+    loginLimiter,
     check("email")
         .isEmail()
         .withMessage("Enter a valid email address")
