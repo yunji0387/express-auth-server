@@ -20,6 +20,13 @@ const loginLimiter = rateLimit({
     message: "Too many login attempts from this IP, please try again after an hour"
 });
 
+// Rate limiter for logout: max 20 requests per IP per hour
+const logoutLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 20,
+    message: "Too many logout attempts from this IP, please try again after an hour"
+});
+
 const router = express.Router();
 
 router.post(
@@ -61,7 +68,7 @@ router.post(
     Login
 );
 
-router.get("/logout", Logout);
+router.get("/logout", logoutLimiter, Logout);
 
 router.get("/verify", VerifyToken, Verify);
 
