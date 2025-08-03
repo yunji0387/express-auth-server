@@ -30,7 +30,7 @@ const logoutLimiter = rateLimit({
 // Rate limiter for verify: max 20 requests per IP per hour
 const verifyLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
-    max: 20,
+    max: 5,
     message: "Too many verification attempts from this IP, please try again after an hour"
 });
 
