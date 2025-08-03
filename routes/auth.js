@@ -20,10 +20,10 @@ const loginLimiter = rateLimit({
     message: "Too many login attempts from this IP, please try again after an hour"
 });
 
-// Rate limiter for logout: max 20 requests per IP per hour
+// Rate limiter for logout: max 10 requests per IP per hour
 const logoutLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
-    max: 20,
+    max: 10,
     message: "Too many logout attempts from this IP, please try again after an hour"
 });
 
