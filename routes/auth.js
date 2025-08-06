@@ -13,6 +13,13 @@ const registerLimiter = rateLimit({
     message: "Too many accounts created from this IP, please try again after an hour"
 });
 
+// Rate limiter for password reset requests: max 5 requests per IP per hour
+const resetPasswordLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5,
+    message: "Too many password reset requests from this IP, please try again after an hour"
+});
+
 // Rate limiter for login: max 10 requests per IP per hour
 const loginLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
@@ -88,7 +95,7 @@ router.get("/verify", verifyLimiter, VerifyToken, Verify);
 
 router.get("/user", userLimiter, VerifyToken, GetUser);
 
-router.post("/request-reset-password", RequestResetPassword);
+router.post("/request-reset-password", resetPasswordLimiter, RequestResetPassword);
 
 router.post("/reset-password/:token", ResetPassword);
 
