@@ -41,6 +41,13 @@ const userLimiter = rateLimit({
     message: "Too many requests for user info from this IP, please try again after an hour"
 });
 
+// Rate limiter for reset password: max 5 requests per IP per hour
+const resetPasswordLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5,
+    message: "Too many password reset attempts from this IP, please try again after an hour"
+});
+
 const router = express.Router();
 
 router.post(
@@ -90,7 +97,7 @@ router.get("/user", userLimiter, VerifyToken, GetUser);
 
 router.post("/request-reset-password", RequestResetPassword);
 
-router.post("/reset-password/:token", ResetPassword);
+router.post("/reset-password/:token", resetPasswordLimiter, ResetPassword);
 
 router.get("/verify-reset-password-token/:token", VerifyResetPasswordToken );
 
