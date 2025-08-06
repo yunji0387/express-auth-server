@@ -44,7 +44,7 @@ const userLimiter = rateLimit({
 // Rate limiter for reset password: max 5 requests per IP per hour
 const resetPasswordLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
-    max: 5,
+    max: 15,
     message: "Too many password reset attempts from this IP, please try again after an hour"
 });
 
