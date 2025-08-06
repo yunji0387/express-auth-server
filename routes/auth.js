@@ -48,6 +48,12 @@ const userLimiter = rateLimit({
     message: "Too many requests for user info from this IP, please try again after an hour"
 });
 
+// Rate limiter for verify reset password token: max 5 requests per IP per hour
+const verifyResetPasswordLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5,
+    message: "Too many attempts to verify reset password token from this IP, please try again after an hour"
+
 // Rate limiter for reset password: max 5 requests per IP per hour
 const resetPasswordLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
@@ -106,7 +112,7 @@ router.post("/request-reset-password", resetPasswordLimiter, RequestResetPasswor
 
 router.post("/reset-password/:token", resetPasswordLimiter, ResetPassword);
 
-router.get("/verify-reset-password-token/:token", VerifyResetPasswordToken );
+router.get("/verify-reset-password-token/:token", verifyResetPasswordLimiter, VerifyResetPasswordToken );
 
 router.get("/google", GoogleAuth);
 
