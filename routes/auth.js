@@ -34,6 +34,13 @@ const verifyLimiter = rateLimit({
     message: "Too many verification attempts from this IP, please try again after an hour"
 });
 
+// Rate limiter for user info: max 20 requests per IP per hour
+const userLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 20,
+    message: "Too many requests for user info from this IP, please try again after an hour"
+});
+
 const router = express.Router();
 
 router.post(
@@ -79,7 +86,7 @@ router.get("/logout", logoutLimiter, Logout);
 
 router.get("/verify", verifyLimiter, VerifyToken, Verify);
 
-router.get("/user", VerifyToken, GetUser);
+router.get("/user", userLimiter, VerifyToken, GetUser);
 
 router.post("/request-reset-password", RequestResetPassword);
 
