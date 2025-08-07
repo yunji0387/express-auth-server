@@ -35,7 +35,7 @@ app.get("/reset-password/:token", (req, res) => {
     // Only allow tokens that match a strict pattern (e.g., JWT: base64url segments, or UUID)
     const token = req.params.token;
     // Example: JWT regex (three base64url segments separated by dots)
-    const jwtRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;
+    const jwtRegex = /^[A-Za-z0-9_-]{4,}\.[A-Za-z0-9_-]{4,}\.[A-Za-z0-9_-]{4,}$/;
     // Example: UUID regex (v4)
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
     if (jwtRegex.test(token) || uuidRegex.test(token)) {
