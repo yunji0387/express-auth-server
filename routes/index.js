@@ -41,7 +41,7 @@ app.get("/reset-password/:token", (req, res) => {
     if (jwtRegex.test(token) || uuidRegex.test(token)) {
         res.render("reset-password", { token });
     } else {
-        res.status(400).send("Invalid or malformed token.");
+        res.status(400).send("Bad Request");
     }
 });
 
